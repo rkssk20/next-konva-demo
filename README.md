@@ -11,4 +11,6 @@ brew doctor
 
 canvasが必要で、それをインストールするためにbrewインストールもする。
 
+その後、vercelデプロイ時にnodeのversionが対応していないと言われるので、vercelのプロジェクトからsetting >> Generalを開いてnodeのversionを14.xに下げる
+
 また、react-konvaが使用されるコンポーネントをdynamic importし、{ ssr: false }に設定する
