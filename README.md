@@ -1,6 +1,8 @@
-Next.jsとKonva(react-konva)を組み合わせたデモ
+## Next.jsとKonva(react-konva)を組み合わせたデモ
 
-画像にテキストなどを重ねる簡単なエディター
+[https://next-konva-demo.vercel.app](https://next-konva-demo.vercel.app)
+
+画像にテキストなどを重ねる簡単なエディターです
 
 ### vercelデプロイエラーの対応
 ```
