@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic'
 
 const Upload = dynamic(() => import('@/components/Upload'))
 const Crop = dynamic(() => import('@/components/Crop'))
-const Edit = dynamic(() => import('@/components/Edit'))
+const Edit = dynamic(() => import('@/components/Edit'), { ssr: false })
 
 const Home: NextPage = () => {
   const [selectImage, setSelectImage] = useState('')
