@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "default-build": "next build",
-    "build": "yum install libuuid-devel libmount-devel --skip-broken && cp /lib64/{libuuid,libmount,libblkid}.so.1 node_modules/canvas/build/Release/ && npm run build",
+    "build": "yum install libuuid-devel libmount-devel --skip-broken && cp /lib64/{libuuid,libmount,libblkid}.so.1 node_modules/canvas/build/Release/ && next build",
     "start": "next start",
     "lint": "next lint"
   },
