@@ -1,8 +1,8 @@
-import { useState, useEffect, MutableRefObject } from 'react'
+import { useState, useEffect } from 'react'
 import type { Stage as StageType } from "konva/lib/Stage";
 
 // 画面幅に関するフック
-const useScreenWidth = (ref: MutableRefObject<StageType | null>) => {
+const useScreenWidth = (ref: StageType | null) => {
   const [size, setSize] = useState({
     width: (window.innerWidth < 640) ? (window.innerWidth - 32) : 608,
     height: (window.innerWidth < 640) ? (((window.innerWidth - 32) / 16) * 9) : 342
@@ -26,7 +26,7 @@ const useScreenWidth = (ref: MutableRefObject<StageType | null>) => {
       const ration = (window.innerWidth < 640) ? ((window.innerWidth - 32) / size.width) : (640 / size.width)
 
       // 値をセットして拡大・縮小する
-      ref.current?.scaleX(ration).scaleY(ration)
+      ref?.scaleX(ration).scaleY(ration)
     }, 500)
   }
   
@@ -38,7 +38,7 @@ const useScreenWidth = (ref: MutableRefObject<StageType | null>) => {
       // アンマウント時に監視を解除
       window.removeEventListener('resize', handleResize)
     }
-  }, [])
+  }, [ref])
 
   return size
 }

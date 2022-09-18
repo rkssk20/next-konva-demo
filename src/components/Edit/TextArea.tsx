@@ -21,13 +21,9 @@ const TextArea = () => {
     })
     .on('dragend', () => {
       if(!ref.current) return
-      
+
       const width = (window.innerWidth < 640) ? (window.innerWidth - 32) : 608
       const height = (window.innerWidth < 640) ? (((window.innerWidth - 32) / 16) * 9) : 342
-
-      console.log(ref.current);
-      
-      
 
       ref.current.absolutePosition({
         x: ((ref.current.attrs.x - ref.current.textWidth) < (-ref.current.textWidth * 2)) ? 5 : (ref.current.attrs.x > (width - 10)) ? (width - 50) : ref.current.attrs.x,
