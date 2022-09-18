@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import type { Text } from "konva/lib/shapes/Text"
 
-const Align = ({ selectShapes }: { selectShapes: Text | null }) => {
+const Align = ({ selectShapes }: { selectShapes: Text  | null }) => {
   const [value, setValue] = useState(selectShapes?.attrs.align)
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const Align = ({ selectShapes }: { selectShapes: Text | null }) => {
             }
             onClick={
               () => {
-                selectShapes?.align(item)
+                 selectShapes?.align(item)
                 setValue(item)
               }
             }

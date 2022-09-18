@@ -2,10 +2,11 @@ import type { Dispatch, SetStateAction } from "react"
 import Konva from "konva"
 import type { Stage } from "konva/lib/Stage"
 import type { Text as TextType } from "konva/lib/shapes/Text"
+import type { Image } from "konva/lib/shapes/Image"
 
 type Props = {
   refState: Stage | null
-  setSelectShapes: Dispatch<SetStateAction<TextType | null>>
+  setSelectShapes: Dispatch<SetStateAction<TextType | Image | null>>
 }
 
 const Text = ({ refState, setSelectShapes }: Props) => {

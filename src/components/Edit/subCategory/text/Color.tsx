@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Text } from "konva/lib/shapes/Text"
+import type { Text } from "konva/lib/shapes/Text"
 
 const Color = ({ selectShapes }: { selectShapes: Text | null }) => {
   const [value, setValue] = useState(selectShapes?.attrs.fill)

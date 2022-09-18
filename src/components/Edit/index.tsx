@@ -1,13 +1,14 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import { Stage, Layer } from 'react-konva';
 import type { Stage as StageType } from "konva/lib/Stage";
-import type { Text as TextType } from "konva/lib/shapes/Text"
+import { Text as TextType } from "konva/lib/shapes/Text"
 import useScreenWidth from '@/hooks/useScreenWidth'
 import Header from '@/atoms/Header'
 import BaseImage from '@/components/Edit/BaseImage'
 import Text from '@/components/Edit/Text'
 import TextEdit from '@/components/Edit/TextEdit'
+import { Image } from "konva/lib/shapes/Image";
 
 type Props = {
   cropImage: string
@@ -15,8 +16,7 @@ type Props = {
 
 const Edit = ({ cropImage }: Props) => {
   const [refState, setRefState] = useState<StageType | null>(null)
-  const [selectShapes, setSelectShapes] = useState<TextType | null>(null)
-  const ref = useRef(null)
+  const [selectShapes, setSelectShapes] = useState<TextType | Image | null>(null)
   const size = useScreenWidth(refState)
   const router = useRouter()
 
@@ -28,9 +28,6 @@ const Edit = ({ cropImage }: Props) => {
       shallow: true
     })
   }
-
-  console.log(selectShapes);
-  
 
   useEffect(() => {
     !cropImage && router.push({ pathname: '/', query: null }, undefined, { shallow: true })
@@ -72,8 +69,9 @@ const Edit = ({ cropImage }: Props) => {
         width={ size.width }
         height={ size.height }
         ref={ setRefState }
-        onClick={ e => setSelectShapes(e.target as TextType) }
-        onDragEnd={ e => setSelectShapes(e.target as TextType) }
+        onClick={ e => setSelectShapes(e.target as TextType | Image) }
+        onTouchEnd={ e => setSelectShapes(e.target as TextType | Image) }
+        onDragEnd={ e => setSelectShapes(e.target as TextType | Image) }
       >
         <Layer>
           <BaseImage cropImage={ cropImage } />
@@ -81,12 +79,10 @@ const Edit = ({ cropImage }: Props) => {
       </Stage>
 
       {
-        selectShapes &&(
-          (selectShapes.constructor.name === 'Text') ?
-          <TextEdit selectShapes={ selectShapes } /> :
-          (selectShapes.constructor.name === 'Image') ?
-          <></> : <></>
-        )
+        selectShapes instanceof TextType ?
+        <TextEdit selectShapes={ selectShapes } /> :
+        selectShapes instanceof Image ?
+        <></> : <></>
       }
 
       <Text refState={ refState } setSelectShapes={ setSelectShapes } />
