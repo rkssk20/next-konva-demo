@@ -3,22 +3,37 @@ import { useRouter } from "next/router"
 import { Stage, Layer } from 'react-konva';
 import type { Stage as StageType } from "konva/lib/Stage";
 import { Text as TextType } from "konva/lib/shapes/Text"
+import { Line } from "konva/lib/shapes/Line";
+import type { SelectShapeType } from "@/type/type";
 import useScreenWidth from '@/hooks/useScreenWidth'
 import Header from '@/atoms/Header'
+import CategoryButton from "@/atoms/CategoryButton";
 import BaseImage from '@/components/Edit/BaseImage'
-import Text from '@/components/Edit/Text'
-import TextEdit from '@/components/Edit/TextEdit'
-import { Image } from "konva/lib/shapes/Image";
+import TextEdit from '@/components/Edit/subCategory/TextEdit'
+import DrawEdit from '@/components/Edit/subCategory/DrawEdit'
+import { KonvaEventObject } from "konva/lib/Node";
 
 type Props = {
   cropImage: string
 }
 
 const Edit = ({ cropImage }: Props) => {
+  const [category, setCategory] = useState<number | null>(null)
   const [refState, setRefState] = useState<StageType | null>(null)
-  const [selectShapes, setSelectShapes] = useState<TextType | Image | null>(null)
+  const [selectShape, setSelectShape] = useState<SelectShapeType>(null)
   const size = useScreenWidth(refState)
   const router = useRouter()
+
+  const category_list = [{
+    name: 'テキスト',
+    icon: <span className="pb-2 text-4xl material-symbols-rounded">&#xe264;</span>
+  }, {
+    name: 'フィルター',
+    icon: <span className="pb-2 text-4xl material-symbols-rounded">&#xe43b;</span>
+  }, {
+    name: '手書き',
+    icon:  <span className="pb-2 text-4xl material-symbols-rounded">&#xe3ae;</span>
+  }]
 
   const handleNext = () => {
     router.push({
@@ -27,6 +42,11 @@ const Edit = ({ cropImage }: Props) => {
     }, undefined, {
       shallow: true
     })
+  }
+
+  const handleSelect = (e: KonvaEventObject<MouseEvent | TouchEvent | DragEvent>) => {
+    setCategory(e.target instanceof TextType ? 0 : e.target instanceof Line ? 2 : null)
+    setSelectShape(e.target as TextType | Line)
   }
 
   useEffect(() => {
@@ -69,9 +89,9 @@ const Edit = ({ cropImage }: Props) => {
         width={ size.width }
         height={ size.height }
         ref={ setRefState }
-        onClick={ e => setSelectShapes(e.target as TextType | Image) }
-        onTouchEnd={ e => setSelectShapes(e.target as TextType | Image) }
-        onDragEnd={ e => setSelectShapes(e.target as TextType | Image) }
+        onClick={ handleSelect }
+        onTouchStart={ handleSelect }
+        onDragEnd={ handleSelect }
       >
         <Layer>
           <BaseImage cropImage={ cropImage } />
@@ -79,13 +99,31 @@ const Edit = ({ cropImage }: Props) => {
       </Stage>
 
       {
-        selectShapes instanceof TextType ?
-        <TextEdit selectShapes={ selectShapes } /> :
-        selectShapes instanceof Image ?
-        <></> : <></>
+        (category !== null) && (
+          (category === 0) ?
+          <TextEdit
+            refState={ refState }
+            selectShape={ selectShape }
+            setSelectShape={ setSelectShape }
+          /> :
+          (category === 1) ?
+          <></> :
+          <DrawEdit selectShape={ selectShape } />
+        )
       }
 
-      <Text refState={ refState } setSelectShapes={ setSelectShapes } />
+      <div className="flex">
+        {
+          category_list.map((item, index) => (
+            <CategoryButton
+              key={ item.name }
+              name={ item.name }
+              icon={ item.icon }
+              handle={ () => setCategory(index) }
+            />
+          ))
+        }
+      </div>
     </>
   )
 }

@@ -24,17 +24,19 @@ const Tabs = ({ tab_list, tabNumber, setTabNumber }: Props) => {
               (tabNumber === index) ?
               `
                 p-2
-                min-w-[80px]
+                min-w-[90px]
                 min-h-[60px]
+                text-xs
                 border-b-4
                 border-solid
                 border-[#4c6cb3]
-              `
-              :
-              `
+                `
+                :
+                `
                 p-2
-                min-w-[80px]
+                min-w-[90px]
                 min-h-[60px]
+                text-xs
                 duration-200
                 border-b-4
                 border-transparent
@@ -43,9 +45,7 @@ const Tabs = ({ tab_list, tabNumber, setTabNumber }: Props) => {
               `
             }
             key={ item }
-            onClick={
-              () => setTabNumber(index)
-            }
+            onClick={ () => setTabNumber(index) }
           >
             { item }
           </button>

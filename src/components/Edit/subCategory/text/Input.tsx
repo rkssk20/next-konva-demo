@@ -1,16 +1,13 @@
 import { useState, useEffect } from 'react'
-import type { Text } from "konva/lib/shapes/Text"
+import { Text } from 'konva/lib/shapes/Text'
+import type { SelectShapeType } from '@/type/type'
 
-type Props = {
-  selectShapes: Text | null
-}
-
-const Input = ({ selectShapes }: Props) => {
+const Input = ({ selectShape }: { selectShape: SelectShapeType }) => {
   const [text, setText] = useState('')
 
   useEffect(() => {
-    setText(selectShapes?.attrs.text)
-  }, [selectShapes])
+    setText(selectShape?.attrs.text)
+  }, [selectShape])
 
   return (
     <textarea
@@ -27,7 +24,7 @@ const Input = ({ selectShapes }: Props) => {
       rows={ 3 }
       value={ text }
       onChange={ e => {
-        selectShapes?.text(e.target.value)
+        (selectShape instanceof Text) && selectShape?.text(e.target.value)
         setText(e.target.value)
       }}
     />

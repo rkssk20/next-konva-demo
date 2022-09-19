@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react"
-import type { Text } from "konva/lib/shapes/Text"
+import type { SelectShapeType } from "@/type/type"
 
-const Color = ({ selectShapes }: { selectShapes: Text | null }) => {
-  const [value, setValue] = useState(selectShapes?.attrs.fill)
+const Color = ({ selectShape }: { selectShape: SelectShapeType }) => {
+  const [value, setValue] = useState(selectShape?.attrs.fill)
   
   useEffect(() => {
-    setValue(selectShapes?.attrs.fill)
-  }, [selectShapes])
+    setValue(selectShape?.attrs.fill)
+  }, [selectShape])
 
   return (
     <div className="flex">
@@ -22,7 +22,7 @@ const Color = ({ selectShapes }: { selectShapes: Text | null }) => {
         value={ value }
         onChange={
           e => {
-            selectShapes?.fill(e.target.value)
+            selectShape?.fill(e.target.value)
             setValue(e.target.value)
           }
         }

@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
-import type { Text } from "konva/lib/shapes/Text"
+import { Text } from "konva/lib/shapes/Text"
+import type { SelectShapeType } from "@/type/type"
 
-const Align = ({ selectShapes }: { selectShapes: Text  | null }) => {
-  const [value, setValue] = useState(selectShapes?.attrs.align)
+const Align = ({ selectShape }: { selectShape: SelectShapeType }) => {
+  const [value, setValue] = useState(selectShape?.attrs.align)
 
   useEffect(() => {
-    setValue(selectShapes?.attrs.align)
-  }, [selectShapes])
+    setValue(selectShape?.attrs.align)
+  }, [selectShape])
 
   return (
     <div>
@@ -20,7 +21,7 @@ const Align = ({ selectShapes }: { selectShapes: Text  | null }) => {
             }
             onClick={
               () => {
-                 selectShapes?.align(item)
+                (selectShape instanceof Text) && selectShape?.align(item)
                 setValue(item)
               }
             }
