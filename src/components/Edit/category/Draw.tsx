@@ -33,11 +33,7 @@ const Draw = ({ refState, setSelectShapes }: Props) => {
   }
 
   return (
-    <CategoryButton
-      name='手書き'
-      icon='&#xe3ae;'
-      handle={ handleDraw }
-    />
+    <div>a</div>
   )
 }
 
