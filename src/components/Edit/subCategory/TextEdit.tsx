@@ -15,10 +15,7 @@ type Props = {
 }
 
 const TextEdit = ({ refState, selectShape, setSelectShape }: Props) => {
-  const [tabNumber, setTabNumber] = useState(0)
-
-  console.log(selectShape);
-  
+  const [tabNumber, setTabNumber] = useState<number>(0)
 
   const subcategory_list = [{
     name: '入力',
@@ -34,15 +31,15 @@ const TextEdit = ({ refState, selectShape, setSelectShape }: Props) => {
     icon: <span className="pb-2 text-2xl material-symbols-rounded">&#xe167;</span>
   }]
 
+  const handleAdd = () => {
+    handleAddText({ refState, setSelectShape })
+
+    setTabNumber(0)
+  }
+
   return (
     <div>
-      <div
-        className='
-          w-full
-          flex
-          overflow-scroll
-        '
-      >
+      <div className='flex'>
         <button
           className='
             min-w-[90px]
@@ -57,25 +54,35 @@ const TextEdit = ({ refState, selectShape, setSelectShape }: Props) => {
             border-transparent
             hover:bg-[#efefef]
             active:bg-[#e5e5e5]
-            rounded-2xl
           '
-          onClick={ () => handleAddText({ refState, setSelectShape }) }
+          onClick={ handleAdd }
         >
           <span className="pb-2 text-2xl material-symbols-rounded">&#xe145;</span>
           追加
         </button>
-        
-        {
-          subcategory_list.map((item, index) => (
-            <SubCategoryButton
-              key={ item.name }
-              name={ item.name }
-              icon={ item.icon }
-              disabled={ selectShape instanceof Text }
-              handle={ () => setTabNumber(index) }
-            />
-          ))
-        }
+
+        <div className='mx-2 border-r border-gray-300' />
+
+        <div
+          className='
+            w-full
+            flex
+            overflow-scroll
+          '
+        >
+          {
+            subcategory_list.map((item, index) => (
+              <SubCategoryButton
+                key={ item.name }
+                name={ item.name }
+                icon={ item.icon }
+                disabled={ !(selectShape instanceof Text) }
+                handle={ () => setTabNumber(index) }
+                select={ (tabNumber === index) }
+              />
+            ))
+          }
+        </div>
       </div>
       {/* <Tabs
         tab_list={ tab_list }
@@ -84,6 +91,7 @@ const TextEdit = ({ refState, selectShape, setSelectShape }: Props) => {
       /> */}
 
       {
+        (selectShape instanceof Text) &&
         (tabNumber === 0) ?
         <Input selectShape={ selectShape } /> :
         (tabNumber === 1) ?

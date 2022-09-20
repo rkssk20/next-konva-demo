@@ -1,16 +1,15 @@
-
 type Props = {
   name: string
   icon: JSX.Element
   handle: () => void
   disabled: boolean
+  select: boolean
 }
 
-const SubCategoryButton = ({ name, icon, handle, disabled }: Props) => {
+const SubCategoryButton = ({ name, icon, handle, disabled, select }: Props) => {
   return (
     <button
       className={
-        !disabled ?
         `
           min-w-[90px]
           p-2
@@ -19,30 +18,33 @@ const SubCategoryButton = ({ name, icon, handle, disabled }: Props) => {
           items-center
           justify-center
           text-xs
-          text-gray-400
           border-b-4
-          border-transparent
-          rounded-2xl
-        `
-        :
-        `
-          min-w-[90px]
-          p-2
-          flex
-          flex-col
-          items-center
-          justify-center
-          text-xs
-          duration-200
-          border-b-4
-          border-transparent
-          hover:bg-[#efefef]
-          active:bg-[#e5e5e5]
-          rounded-2xl
+          rounded
+          ${ disabled ?
+            // テキスト未選択時
+            `text-gray-400
+              border-transparent
+            `
+            :
+            select ?
+            // サブカテゴリ選択次
+            `
+              duration-200
+              border-[#4c6cb3]
+            `
+            :
+            // サブカテゴリ未選択時
+            `
+              duration-200
+              border-transparent
+              hover:bg-[#efefef]
+              active:bg-[#e5e5e5]
+            `
+          }
         `
       }
       onClick={ handle }
-      disabled={ !disabled }
+      disabled={ disabled }
     >
       { icon }
       { name }
