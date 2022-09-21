@@ -8,11 +8,11 @@ const Header = ({ title, backIcon, forwardIcon }: Props) => {
   return (
     <div
       className='
+        h-[53px]
         p-2
         fixed
         top-0
-        right-0
-        left-0
+        inset-x-0
         flex
         items-center
         justify-between

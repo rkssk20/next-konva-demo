@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from "react"
-import type { Text } from "konva/lib/shapes/Text"
+import type { Text, TextConfig } from "konva/lib/shapes/Text"
 import type { Line } from "konva/lib/shapes/Line"
 
 export type SelectShapeType = Text | Line | null

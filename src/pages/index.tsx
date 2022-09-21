@@ -16,13 +16,14 @@ const Home: NextPage = () => {
     <div
       className='
         max-w-screen-sm
-        min-h-screen
-        mt-[60px]
-        mb-4
+        h-[calc(100vh-85px)]
+        mt-[69px]
         mx-auto
+        mb-4
         p-4
         bg-white
         rounded-2xl
+        overflow-scroll
       '
     >
       {

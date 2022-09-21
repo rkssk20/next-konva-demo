@@ -66,7 +66,8 @@ const Crop = ({ selectImage, setCropImage }: Props) => {
         }
       />
 
-      <div className="mt-4 flex flex-col items-center">
+      
+      <div className="my-auto flex flex-col items-center">
         <div
           className='
             w-[calc(100%-32px)]
@@ -94,8 +95,8 @@ const Crop = ({ selectImage, setCropImage }: Props) => {
             items-center
           "
         >
-          <span className="text-2xl mr-1 select-none material-symbols-rounded">
-            縮小
+          <span className="text-3xl mr-1 select-none material-symbols-rounded">
+            &#xe900;
           </span>
 
           <input
@@ -108,8 +109,8 @@ const Crop = ({ selectImage, setCropImage }: Props) => {
             onChange={ (e) => setZoom(Number(e.target.value)) }
           />
 
-          <span className="text-2xl mr-1 select-none material-symbols-rounded">
-            拡大
+          <span className="text-3xl mr-1 select-none material-symbols-rounded">
+            &#xe8ff;
           </span>
         </div>
       </div>

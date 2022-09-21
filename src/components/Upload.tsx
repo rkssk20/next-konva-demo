@@ -33,11 +33,11 @@ const Upload = ({ setSelectImage }: Props) => {
     <>
       <div
         className='
+          h-[53px]
           p-2
           fixed
           top-0
-          right-0
-          left-0
+          inset-x-0
           flex
           items-center
           bg-white
@@ -49,13 +49,42 @@ const Upload = ({ setSelectImage }: Props) => {
         </p>
       </div>
 
-      <input
-        className='m-auto'
-        accept="image/*"
-        type='file'
-        onChange={ handleUpload }
-      />
-    </>
+      <div className='mt-4 p-4'>
+        <label
+          className="
+            w-full
+            p-8
+            mx-auto
+            flex
+            flex-col
+            items-center
+            border
+            border-ogp-border
+            border-solid
+            duration-200
+            hover:bg-[#efefef]
+            active:bg-[#e5e5e5]
+            rounded-2xl
+          "
+        >
+          <input
+            className='m-auto'
+            accept="image/*"
+            type='file'
+            hidden
+            onChange={ handleUpload }
+          />
+
+          <span className='pb-4 text-4xl material-symbols-rounded'>
+            &#xe43e;
+          </span>
+
+          <p className='text-xl'>
+            画像をアップロード
+          </p>
+        </label>
+      </div>
+   </>
   )
 }
 

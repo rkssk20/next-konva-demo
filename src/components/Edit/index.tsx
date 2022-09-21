@@ -26,13 +26,13 @@ const Edit = ({ cropImage }: Props) => {
 
   const category_list = [{
     name: 'テキスト',
-    icon: <span className="pb-2 text-4xl material-symbols-rounded">&#xe264;</span>
+    icon: <span className="pb-2 text-2xl material-symbols-rounded">&#xe264;</span>
   }, {
     name: 'フィルター',
-    icon: <span className="pb-2 text-4xl material-symbols-rounded">&#xe43b;</span>
+    icon: <span className="pb-2 text-2xl material-symbols-rounded">&#xe43b;</span>
   }, {
     name: '手書き',
-    icon:  <span className="pb-2 text-4xl material-symbols-rounded">&#xe3ae;</span>
+    icon:  <span className="pb-2 text-2xl material-symbols-rounded">&#xe3ae;</span>
   }]
 
   const handleNext = () => {
@@ -81,7 +81,8 @@ const Edit = ({ cropImage }: Props) => {
 
       <Stage
         className="
-          mb-8
+          mb-4
+          mx-4
           border
           border-slate-400
           border-solid
@@ -112,7 +113,18 @@ const Edit = ({ cropImage }: Props) => {
         )
       }
 
-      <div className="flex">
+      <div
+        className="
+          w-full
+          sticky
+          top-full
+          flex
+          border-t
+          border-ogp-border
+          border-solid
+          bg-white
+        "
+      >
         {
           category_list.map((item, index) => (
             <CategoryButton

@@ -5,8 +5,9 @@ import type { SelectShapeType, SetSelectShapeType } from '@/type/type'
 import handleAddText from '@/lib/handleAddText'
 import SubCategoryButton from '@/atoms/SubCategoryButton'
 import Input from '@/components/Edit/subCategory/text/Input'
+import Format from '@/components/Edit/subCategory/text/Format'
 import Color from '@/components/Edit/subCategory/text/Color'
-import Align from '@/components/Edit/subCategory/text/Align'
+import Align from '@/components/Edit/subCategory/text/Fonts'
 
 type Props = {
   refState: Stage | null
@@ -38,8 +39,8 @@ const TextEdit = ({ refState, selectShape, setSelectShape }: Props) => {
   }
 
   return (
-    <div>
-      <div className='flex'>
+    <div className='h-max overflow-scroll'>
+      <div className='flex mb-4'>
         <button
           className='
             min-w-[90px]
@@ -95,7 +96,7 @@ const TextEdit = ({ refState, selectShape, setSelectShape }: Props) => {
         (tabNumber === 0) ?
         <Input selectShape={ selectShape } /> :
         (tabNumber === 1) ?
-        <></> :
+        <Format selectShape={ selectShape } /> :
         (tabNumber === 2) ?
         <Color selectShape={ selectShape } /> :
         (tabNumber === 3) ?
