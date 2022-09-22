@@ -1,5 +1,7 @@
 import type { ChangeEvent, Dispatch, SetStateAction } from 'react'
 import { useRouter } from 'next/router'
+import Page from '@/atoms/Page'
+import Header from '@/atoms/Header'
 
 type Props = {
   setSelectImage: Dispatch<SetStateAction<string>>
@@ -30,24 +32,16 @@ const Upload = ({ setSelectImage }: Props) => {
   }
 
   return (
-    <>
-      <div
-        className='
-          h-[53px]
-          p-2
-          fixed
-          top-0
-          inset-x-0
-          flex
-          items-center
-          bg-white
-          z-10
-        '
-      >
-        <p className='ml-auto mr-auto text-xl font-bold text-center'>
-          画像を選択
-        </p>
-      </div>
+    <Page>
+      <Header
+        title='画像を選択'
+        backIcon={
+          <button>
+            キャンセル
+          </button>
+        }
+        forwardIcon={ undefined }
+      />
 
       <div className='mt-4 p-4'>
         <label
@@ -84,7 +78,7 @@ const Upload = ({ setSelectImage }: Props) => {
           </p>
         </label>
       </div>
-   </>
+   </Page>
   )
 }
 

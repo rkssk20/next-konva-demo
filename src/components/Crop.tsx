@@ -3,6 +3,7 @@ import { useRouter } from "next/router"
 import Cropper from "react-easy-crop"
 import { Point, Area } from "react-easy-crop/types"
 import getCroppedImg from "@/lib/getCroppedImg"
+import Page from '@/atoms/Page'
 import Header from '@/atoms/Header'
 
 type Props = {
@@ -46,7 +47,7 @@ const Crop = ({ selectImage, setCropImage }: Props) => {
   }
 
   return (
-    <>
+    <Page>
       <Header
         title='範囲を選択'
         backIcon={
@@ -114,7 +115,7 @@ const Crop = ({ selectImage, setCropImage }: Props) => {
           </span>
         </div>
       </div>
-    </>
+    </Page>
   )
 }
 

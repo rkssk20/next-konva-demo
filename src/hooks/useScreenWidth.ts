@@ -4,8 +4,8 @@ import type { Stage as StageType } from "konva/lib/Stage";
 // 画面幅に関するフック
 const useScreenWidth = (ref: StageType | null) => {
   const [size, setSize] = useState({
-    width: (window.innerWidth < 640) ? (window.innerWidth - 64) : 576,
-    height: (window.innerWidth < 640) ? (((window.innerWidth - 64) / 16) * 9) : 324.288
+    width: (window.innerWidth < 1056) ? (window.innerWidth < 768) ? (window.innerWidth < 672) ? (window.innerWidth - 32) : 608 : (((window.innerWidth - 32) - 48) - 376) : 600,
+    height: (window.innerWidth < 1056) ? (window.innerWidth < 768) ? (window.innerWidth < 672) ? ((window.innerWidth - 32) * 0.563) : 342.304 : ((((window.innerWidth - 32) - 48) - 376) * 0.563) : 337.8
   })
 
   // 画面幅の変更
@@ -18,12 +18,12 @@ const useScreenWidth = (ref: StageType | null) => {
     timeId = window.setTimeout(() => {
       // canvasサイズをセット
       setSize({
-        width: (window.innerWidth < 640) ? (window.innerWidth - 64) : 576,
-        height: (window.innerWidth < 640) ? (((window.innerWidth - 64) / 16) * 9) : 324.288
+        width: (window.innerWidth < 1056) ? (window.innerWidth < 768) ? (window.innerWidth < 672) ? (window.innerWidth - 32) : 608 : (((window.innerWidth - 32) - 48) - 376) : 600,
+        height: (window.innerWidth < 1056) ? (window.innerWidth < 768) ? (window.innerWidth < 672) ? ((window.innerWidth - 32) * 0.563) : 342.304 : ((((window.innerWidth - 32) - 48) - 376) * 0.563) : 337.8
       })
 
       // 元のキャンバスサイズと比較し、現在のサイズにするための値を求める
-      const ration = (window.innerWidth < 640) ? ((window.innerWidth - 64) / size.width) : (640 / size.width)
+      const ration = (window.innerWidth < 1056) ? (window.innerWidth < 768) ? (window.innerWidth < 672) ? ((window.innerWidth - 32) / size.width) : (608 / size.width) : ((((window.innerWidth - 32) - 48) - 376) / size.width) : (600 / size.width)
 
       // 値をセットして拡大・縮小する
       ref?.scaleX(ration).scaleY(ration)

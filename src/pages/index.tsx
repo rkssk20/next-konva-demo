@@ -13,20 +13,19 @@ const Home: NextPage = () => {
   const router = useRouter()
 
   return (
-    <div
-      className='
-        max-w-screen-sm
-        h-[calc(100vh-85px)]
-        mt-[69px]
-        mx-auto
-        mb-4
-        p-4
-        bg-white
-        rounded-2xl
-        overflow-scroll
-      '
-    >
-      {
+    // <div
+    //   className='
+    //     max-w-screen-sm
+    //     h-[calc(100vh-85px)]
+    //     mt-[69px]
+    //     mx-auto
+    //     p-4
+    //     bg-white
+    //     rounded-2xl
+    //     overflow-scroll
+    //   '
+    // >
+    //   {
         (router.query.step === 'crop') ?
         <Crop selectImage={ selectImage } setCropImage={ setCropImage } />
         :
@@ -34,8 +33,8 @@ const Home: NextPage = () => {
         <Edit cropImage={ cropImage } />
         :
         <Upload setSelectImage={ setSelectImage } />
-      }
-    </div>
+    //   }
+    // </div>
   )
 }
 

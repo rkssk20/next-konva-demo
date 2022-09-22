@@ -1,7 +1,7 @@
 type Props = {
   title: string
   backIcon: JSX.Element
-  forwardIcon: JSX.Element
+  forwardIcon: JSX.Element | undefined
 }
 
 const Header = ({ title, backIcon, forwardIcon }: Props) => {
@@ -22,7 +22,17 @@ const Header = ({ title, backIcon, forwardIcon }: Props) => {
     >
       { backIcon }
 
-      <p className='text-xl font-bold text-center'>
+      <p
+        className='
+          w-max
+          mx-auto
+          absolute
+          inset-x-0
+          text-xl
+          font-bold
+          text-center
+        '
+      >
         { title }
       </p>
 

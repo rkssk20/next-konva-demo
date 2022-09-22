@@ -15,8 +15,8 @@ const BaseImage = ({ cropImage }: Props) => {
   // (画面幅変更時、画像はcanvasの比率と連動する)
   useEffect(() => {
     ref.current
-    ?.width((window.innerWidth < 640) ? (window.innerWidth - 32) : 608)
-    .height((window.innerWidth < 640) ? (((window.innerWidth - 32) / 16) * 9) : 342)
+    ?.width((window.innerWidth < 1056) ? (window.innerWidth < 768) ? (window.innerWidth < 672) ? (window.innerWidth - 32) : 608 : (((window.innerWidth - 32) - 48) - 376) : 600)
+    .height((window.innerWidth < 1056) ? (window.innerWidth < 768) ? (window.innerWidth < 672) ? ((window.innerWidth - 32) * 0.563) : 324.304 : ((((window.innerWidth - 32) - 48) - 376) * 0.563) : 337.8)
   }, [])
 
   return (

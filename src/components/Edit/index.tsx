@@ -54,7 +54,23 @@ const Edit = ({ cropImage }: Props) => {
   }, [cropImage])
   
   return (
-    <>
+    <div
+      className="
+        w-full
+        sm:w-[640px]
+        md:w-[calc(100%-32px)]
+        max-w-5xl
+        h-[calc(100vh-85px)]
+        mt-[69px]
+        mx-auto
+        p-4
+        md:flex
+        md:justify-between
+        bg-white
+        rounded-2xl
+        overflow-scroll
+      "
+    >
       <Header
         title='画像を編集'
         backIcon={
@@ -80,13 +96,10 @@ const Edit = ({ cropImage }: Props) => {
       />
 
       <Stage
-        className="
-          mb-4
-          mx-4
-          border
-          border-slate-400
-          border-solid
-        "
+        className={`
+          h-min
+          my-auto
+        `}
         width={ size.width }
         height={ size.height }
         ref={ setRefState }
@@ -99,44 +112,46 @@ const Edit = ({ cropImage }: Props) => {
         </Layer>
       </Stage>
 
-      {
-        (category !== null) && (
-          (category === 0) ?
-          <TextEdit
-            refState={ refState }
-            selectShape={ selectShape }
-            setSelectShape={ setSelectShape }
-          /> :
-          (category === 1) ?
-          <></> :
-          <DrawEdit selectShape={ selectShape } />
-        )
-      }
-
-      <div
-        className="
-          w-full
-          sticky
-          top-full
-          flex
-          border-t
-          border-ogp-border
-          border-solid
-          bg-white
-        "
-      >
+      <div className="md:w-[376px]">
         {
-          category_list.map((item, index) => (
-            <CategoryButton
-              key={ item.name }
-              name={ item.name }
-              icon={ item.icon }
-              handle={ () => setCategory(index) }
-            />
-          ))
+          (category !== null) && (
+            (category === 0) ?
+            <TextEdit
+              refState={ refState }
+              selectShape={ selectShape }
+              setSelectShape={ setSelectShape }
+            /> :
+            (category === 1) ?
+            <></> :
+            <DrawEdit selectShape={ selectShape } />
+          )
         }
+
+        <div
+          className="
+            w-full
+            sticky
+            top-full
+            flex
+            border-t
+            border-ogp-border
+            border-solid
+            bg-white
+          "
+        >
+          {
+            category_list.map((item, index) => (
+              <CategoryButton
+                key={ item.name }
+                name={ item.name }
+                icon={ item.icon }
+                handle={ () => setCategory(index) }
+              />
+            ))
+          }
+        </div>
       </div>
-    </>
+    </div>
   )
 }
 
