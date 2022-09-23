@@ -97,9 +97,9 @@ const Edit = ({ cropImage }: Props) => {
 
       <Stage
         className="
-          h-min
           mb-2
           md:my-auto
+          shadow-[0_0_5px_1px_rgba(0,0,0,0.3)]
         "
         width={ size.width }
         height={ size.height }
@@ -119,6 +119,10 @@ const Edit = ({ cropImage }: Props) => {
           md:w-[376px]
           flex
           flex-col
+          border
+          border-ogp-border
+          border-solid
+          rounded-2xl
         "
         style={{
           height: (window.innerWidth < 768) ? `calc(100% - ${ size.height }px)` : '100%'
@@ -129,6 +133,10 @@ const Edit = ({ cropImage }: Props) => {
             w-full
             flex
             overflow-x-scroll
+            border-b
+            border-ogp-border
+            border-solid
+            rounded-t-2xl
           "
         >
           {
@@ -138,6 +146,7 @@ const Edit = ({ cropImage }: Props) => {
                 name={ item.name }
                 icon={ item.icon }
                 handle={ () => setCategory(index) }
+                select={ category === index }
               />
             ))
           }

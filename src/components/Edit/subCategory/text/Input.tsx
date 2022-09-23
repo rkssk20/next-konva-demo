@@ -12,8 +12,8 @@ const Input = ({ selectShape }: { selectShape: SelectShapeType }) => {
   return (
     <textarea
       className='
-        w-full
         mt-2
+        mx-2
         p-2
         bg-gray-200
         rounded-xl

@@ -40,7 +40,15 @@ const TextEdit = ({ refState, selectShape, setSelectShape }: Props) => {
 
   return (
     <>
-      <div className='flex my-2'>
+      <div
+        className='
+          flex
+          mb-2
+          border-b
+          border-ogp-border
+          border-solid
+        '
+      >
         <button
           className='
             min-w-[90px]

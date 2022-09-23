@@ -19,7 +19,6 @@ const SubCategoryButton = ({ name, icon, handle, disabled, select }: Props) => {
           justify-center
           text-xs
           border-b-4
-          rounded
           ${ disabled ?
             // テキスト未選択時
             `text-gray-400
