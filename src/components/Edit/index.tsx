@@ -57,7 +57,7 @@ const Edit = ({ cropImage }: Props) => {
     <div
       className="
         w-full
-        sm:w-[640px]
+        xs:w-[528px]
         md:w-[calc(100%-32px)]
         max-w-5xl
         h-[calc(100vh-85px)]
@@ -68,7 +68,7 @@ const Edit = ({ cropImage }: Props) => {
         md:justify-between
         bg-white
         rounded-2xl
-        overflow-scroll
+        overflow-hidden
       "
     >
       <Header
@@ -96,10 +96,11 @@ const Edit = ({ cropImage }: Props) => {
       />
 
       <Stage
-        className={`
+        className="
           h-min
-          my-auto
-        `}
+          mb-2
+          md:my-auto
+        "
         width={ size.width }
         height={ size.height }
         ref={ setRefState }
@@ -112,31 +113,22 @@ const Edit = ({ cropImage }: Props) => {
         </Layer>
       </Stage>
 
-      <div className="md:w-[376px]">
-        {
-          (category !== null) && (
-            (category === 0) ?
-            <TextEdit
-              refState={ refState }
-              selectShape={ selectShape }
-              setSelectShape={ setSelectShape }
-            /> :
-            (category === 1) ?
-            <></> :
-            <DrawEdit selectShape={ selectShape } />
-          )
-        }
-
+      <div
+        className="
+          w-full
+          md:w-[376px]
+          flex
+          flex-col
+        "
+        style={{
+          height: (window.innerWidth < 768) ? `calc(100% - ${ size.height }px)` : '100%'
+        }}
+      >
         <div
           className="
             w-full
-            sticky
-            top-full
             flex
-            border-t
-            border-ogp-border
-            border-solid
-            bg-white
+            overflow-x-scroll
           "
         >
           {
@@ -150,6 +142,20 @@ const Edit = ({ cropImage }: Props) => {
             ))
           }
         </div>
+
+        {
+          (category !== null) && (
+            (category === 0) ?
+            <TextEdit
+              refState={ refState }
+              selectShape={ selectShape }
+              setSelectShape={ setSelectShape }
+            /> :
+            (category === 1) ?
+            <></> :
+            <DrawEdit selectShape={ selectShape } />
+          )
+        }
       </div>
     </div>
   )

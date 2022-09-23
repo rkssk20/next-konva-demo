@@ -11,7 +11,6 @@ const Page = ({ children }: { children: ReactNode }) => {
         p-4
         bg-white
         rounded-2xl
-        overflow-scroll
       '
     >
       { children }

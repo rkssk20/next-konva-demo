@@ -5,7 +5,7 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head lang="ja">    
-          <meta property="og:site_name" content= "サムネリンク" />
+          <meta property="og:site_name" content= "デモ" />
           <meta property="og:local" content="ja_JP" />
 
           {/* google font */}

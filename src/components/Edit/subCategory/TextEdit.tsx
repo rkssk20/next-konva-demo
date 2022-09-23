@@ -39,8 +39,8 @@ const TextEdit = ({ refState, selectShape, setSelectShape }: Props) => {
   }
 
   return (
-    <div className='h-max overflow-scroll'>
-      <div className='flex mb-4'>
+    <>
+      <div className='flex my-2'>
         <button
           className='
             min-w-[90px]
@@ -68,7 +68,7 @@ const TextEdit = ({ refState, selectShape, setSelectShape }: Props) => {
           className='
             w-full
             flex
-            overflow-scroll
+            overflow-x-scroll
           '
         >
           {
@@ -85,11 +85,6 @@ const TextEdit = ({ refState, selectShape, setSelectShape }: Props) => {
           }
         </div>
       </div>
-      {/* <Tabs
-        tab_list={ tab_list }
-        tabNumber={ tabNumber }
-        setTabNumber={ setTabNumber }
-      /> */}
 
       {
         (selectShape instanceof Text) &&
@@ -103,8 +98,7 @@ const TextEdit = ({ refState, selectShape, setSelectShape }: Props) => {
         <Align selectShape={ selectShape } /> :
         <></>
       }
-      
-    </div>
+    </>
   )
 }
 

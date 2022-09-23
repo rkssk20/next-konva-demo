@@ -72,7 +72,7 @@ const Fonts = ({ selectShape }: { selectShape: SelectShapeType }) => {
   }, [selectShape])
 
   return (
-    <div className=" overflow-scroll">
+    <div className="flex-1 overflow-y-scroll">
       {
         fonts.map(item => (
           <Font key={ item } fontFamily={ item } />

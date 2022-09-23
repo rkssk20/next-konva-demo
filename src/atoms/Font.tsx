@@ -9,7 +9,7 @@ const Font = ({ fontFamily }: Props) => {
     <div>
       <Head>
         <style>
-          @import url({`https://fonts.googleapis.com/css2?family=${ fontFamily.replace(/ /g, '+') }&text=${ fontFamily.replace(/ /g, '') + '%E3%82%B5%E3%83%A0%E3%83%8D%E3%83%AA%E3%83%B3%E3%82%AF' }&display=swap`});
+          @import url({`https://fonts.googleapis.com/css2?family=${ fontFamily.replace(/ /g, '+') }&text=${ fontFamily.replace(/ /g, '') }&display=swap`});
         </style>
       </Head>
 
@@ -29,7 +29,7 @@ const Font = ({ fontFamily }: Props) => {
           rounded-xl
         "
       >
-        { fontFamily + '　サムネリンク' }
+        { fontFamily }
       </button>
     </div>
   )
