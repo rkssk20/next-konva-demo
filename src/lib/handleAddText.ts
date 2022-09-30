@@ -1,13 +1,12 @@
-import type { Dispatch, SetStateAction } from "react"
 import Konva from "konva"
 import type { Stage } from "konva/lib/Stage"
 import type { Text } from "konva/lib/shapes/Text"
-import type { Line } from "konva/lib/shapes/Line"
+import type { SetSelectShapeType } from '@/type/type'
 
 
 type Props = {
   refState: Stage | null
-  setSelectShape: Dispatch<SetStateAction<Text | Line | null>>
+  setSelectShape: SetSelectShapeType
 }
 
 const handleAddText = ({ refState, setSelectShape }: Props) => {

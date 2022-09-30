@@ -1,11 +1,14 @@
+import type { MouseEvent } from "react"
+
 type Props = {
   name: string
   icon: JSX.Element
-  handle: () => void
+  handle: (e: MouseEvent<HTMLButtonElement>, index: number) => void
   select: boolean
+  index: number
 }
 
-const CategoryButton = ({ name, handle, icon, select }: Props) => {
+const CategoryButton = ({ name, handle, icon, select, index }: Props) => {
   return (
     <button
       className={`
@@ -29,7 +32,7 @@ const CategoryButton = ({ name, handle, icon, select }: Props) => {
           `
         }
       `}
-      onClick={ handle }
+      onClick={ (e) => handle(e,index) }
     >
       { icon }
 

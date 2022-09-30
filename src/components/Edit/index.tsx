@@ -1,17 +1,22 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef, MouseEvent as MouseEventType } from "react"
 import { useRouter } from "next/router"
-import { Stage, Layer } from 'react-konva';
+import { Stage, Layer , Image } from 'react-konva';
 import type { Stage as StageType } from "konva/lib/Stage";
+import { Image as ImageType } from "konva/lib/shapes/Image";
 import { Text as TextType } from "konva/lib/shapes/Text"
 import { Line } from "konva/lib/shapes/Line";
 import type { SelectShapeType } from "@/type/type";
+import useImage from "@/hooks/useImage";
 import useScreenWidth from '@/hooks/useScreenWidth'
 import Header from '@/atoms/Header'
 import CategoryButton from "@/atoms/CategoryButton";
 import BaseImage from '@/components/Edit/BaseImage'
 import TextEdit from '@/components/Edit/subCategory/TextEdit'
 import DrawEdit from '@/components/Edit/subCategory/DrawEdit'
+import Filter from '@/components/Edit/category/Filter'
 import { KonvaEventObject } from "konva/lib/Node";
+import Konva from "konva";
+import { Layer as LayerType } from "konva/lib/Layer";
 
 type Props = {
   cropImage: string
@@ -21,8 +26,13 @@ const Edit = ({ cropImage }: Props) => {
   const [category, setCategory] = useState<number | null>(null)
   const [refState, setRefState] = useState<StageType | null>(null)
   const [selectShape, setSelectShape] = useState<SelectShapeType>(null)
+  const image = useImage(cropImage)
   const size = useScreenWidth(refState)
   const router = useRouter()
+  const ref = useRef<LayerType | null>(null)
+
+  console.log(Konva)
+  
 
   const category_list = [{
     name: 'テキスト',
@@ -45,13 +55,84 @@ const Edit = ({ cropImage }: Props) => {
   }
 
   const handleSelect = (e: KonvaEventObject<MouseEvent | TouchEvent | DragEvent>) => {
-    setCategory(e.target instanceof TextType ? 0 : e.target instanceof Line ? 2 : null)
-    setSelectShape(e.target as TextType | Line)
+    setCategory(
+      (e.target instanceof TextType) ? 0 :
+      (e.target instanceof Image) ? 1 :
+      (e.target instanceof Line) ? 2 : null
+    )
+    setSelectShape(e.target as ImageType | TextType | Line)
+    console.log(selectShape)
+  }
+
+  const handleCategory = (e: MouseEventType<HTMLButtonElement>, index: number) => {
+    setCategory(index)
+
+    if(index === 1) {
+      refState?.children && refState.children[0].children && setSelectShape(refState?.children[0]?.children[0] as ImageType)
+    }
   }
 
   useEffect(() => {
-    !cropImage && router.push({ pathname: '/', query: null }, undefined, { shallow: true })
+    !cropImage && router.push({
+      pathname: '/',
+      query: null
+    }, undefined, {
+      shallow: true
+    })
   }, [cropImage])
+
+  // useEffect(() => {
+  //   const newImage = new Konva.Image({
+  //     image,
+  //     width: (
+  //       (window.innerWidth < 528) ? (window.innerWidth - 32) :
+  //         (window.innerWidth < 768) ? 496 :
+  //           (window.innerWidth < 1056) ? (((window.innerWidth - 32) - 48) - 376) : 600
+  //     ),
+  //     height: (
+  //       (window.innerWidth < 528) ? ((window.innerWidth - 32) * 0.563) :
+  //         (window.innerWidth < 768) ? 279.248 :
+  //           (window.innerWidth < 1056) ? ((((window.innerWidth - 32) - 48) - 376) * 0.563) : 337.8
+  //     )
+  //   }) 
+
+  //   refState?.children && refState?.children[0] && refState?.children[0].add(newImage)
+  // }, [refState])
+
+  useEffect(() => {
+    if(!image || (Konva.stages.length > 0)) return
+
+    const konvaStage = new Konva.Stage({
+      container: 'container',
+      width: size.width,
+      height: size.height
+    })
+
+    const konvaLayer = new Konva.Layer()
+
+    const konvaImage = new Konva.Image({
+      image,
+      width: size.width,
+      height: size.height
+    })
+
+    konvaLayer.add(konvaImage)
+    konvaStage.add(konvaLayer)
+    konvaLayer.draw()
+
+    konvaStage.on('mousedown touchstart', (e) => {
+      setCategory(
+        (e.target instanceof TextType) ? 0 :
+        (e.target instanceof ImageType) ? 1 :
+        (e.target instanceof Line) ? 2 : null
+      )
+    })
+
+    return () => {
+      konvaStage.destroy()
+      // konvaImage.remove()
+    }
+  }, [image])
   
   return (
     <div
@@ -95,7 +176,9 @@ const Edit = ({ cropImage }: Props) => {
         }
       />
 
-      <Stage
+      {/* <div id='konva' /> */}
+
+      {/* <Stage
         className="
           mb-2
           md:my-auto
@@ -108,10 +191,12 @@ const Edit = ({ cropImage }: Props) => {
         onTouchStart={ handleSelect }
         onDragEnd={ handleSelect }
       >
-        <Layer>
-          <BaseImage cropImage={ cropImage } />
-        </Layer>
-      </Stage>
+        <Layer> */}
+          {/* <BaseImage cropImage={ cropImage } /> */}
+        {/* </Layer>
+      </Stage> */}
+
+      <div id='container' />
 
       <div
         className="
@@ -145,8 +230,9 @@ const Edit = ({ cropImage }: Props) => {
                 key={ item.name }
                 name={ item.name }
                 icon={ item.icon }
-                handle={ () => setCategory(index) }
+                handle={ handleCategory }
                 select={ category === index }
+                index={ index }
               />
             ))
           }
@@ -161,7 +247,7 @@ const Edit = ({ cropImage }: Props) => {
               setSelectShape={ setSelectShape }
             /> :
             (category === 1) ?
-            <></> :
+            <Filter selectShape={ selectShape } /> :
             <DrawEdit selectShape={ selectShape } />
           )
         }
