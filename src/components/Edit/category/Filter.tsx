@@ -1,25 +1,13 @@
-import { useState, useEffect, ChangeEvent } from "react"
+import { useState, useEffect } from "react";
 import Konva from "konva"
-import type { SelectShapeType } from "@/type/type"
 
-const Filter = ({ selectShape }: { selectShape: SelectShapeType }) => {
-  const [blur, setBlur] = useState<number | null>(null)
+const Filter = ({ selectKey }: { selectKey: string }) => {
+  const [value, setValue] = useState<number | null>(null)
 
-  console.log(selectShape);
-  
-  
   useEffect(() => {
-    setBlur(selectShape?.attrs.blurRadius)
-  }, [selectShape])
-
-  const handleBlur = (e: ChangeEvent<HTMLInputElement>) => {
-    const number = Number(e.target.value)
-
-    setBlur(number)
-    // selectShape?.blurRadius(number)
-    console.log(Konva.shapes)
-  }
-
+    setValue(Konva.shapes[selectKey].attrs.blurRadius)
+  }, [selectKey])
+  
   return (
     <div className="mx-2">
       <p className="">
@@ -44,8 +32,12 @@ const Filter = ({ selectShape }: { selectShape: SelectShapeType }) => {
           min={ 0 }
           max={ 30 }
           step={ 1 }
-          value={ blur ?? 0 }
-          onChange={ handleBlur }
+          value={ value ?? 0 }
+          onChange={ (e) => {
+            const number = Number(e.target.value)
+            Konva.shapes[selectKey].blurRadius(number)
+            setValue(number)
+          }}
         />
 
         <span className="text-3xl mr-1 select-none material-symbols-rounded">

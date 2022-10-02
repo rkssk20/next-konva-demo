@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef, MouseEvent as MouseEventType } from "react"
 import { useRouter } from "next/router"
 import { Stage, Layer , Image } from 'react-konva';
+import Konva from "konva";
 import type { Stage as StageType } from "konva/lib/Stage";
+import { Layer as LayerType } from "konva/lib/Layer";
 import { Image as ImageType } from "konva/lib/shapes/Image";
 import { Text as TextType } from "konva/lib/shapes/Text"
 import { Line } from "konva/lib/shapes/Line";
-import type { SelectShapeType } from "@/type/type";
 import useImage from "@/hooks/useImage";
 import useScreenWidth from '@/hooks/useScreenWidth'
 import Header from '@/atoms/Header'
@@ -14,9 +15,6 @@ import BaseImage from '@/components/Edit/BaseImage'
 import TextEdit from '@/components/Edit/subCategory/TextEdit'
 import DrawEdit from '@/components/Edit/subCategory/DrawEdit'
 import Filter from '@/components/Edit/category/Filter'
-import { KonvaEventObject } from "konva/lib/Node";
-import Konva from "konva";
-import { Layer as LayerType } from "konva/lib/Layer";
 
 type Props = {
   cropImage: string
@@ -25,7 +23,7 @@ type Props = {
 const Edit = ({ cropImage }: Props) => {
   const [category, setCategory] = useState<number | null>(null)
   const [refState, setRefState] = useState<StageType | null>(null)
-  const [selectShape, setSelectShape] = useState<SelectShapeType>(null)
+  const [selectKey, setSelectKey] = useState('')
   const image = useImage(cropImage)
   const size = useScreenWidth(refState)
   const router = useRouter()
@@ -33,7 +31,6 @@ const Edit = ({ cropImage }: Props) => {
 
   console.log(Konva)
   
-
   const category_list = [{
     name: 'テキスト',
     icon: <span className="pb-2 text-2xl material-symbols-rounded">&#xe264;</span>
@@ -54,21 +51,22 @@ const Edit = ({ cropImage }: Props) => {
     })
   }
 
-  const handleSelect = (e: KonvaEventObject<MouseEvent | TouchEvent | DragEvent>) => {
-    setCategory(
-      (e.target instanceof TextType) ? 0 :
-      (e.target instanceof Image) ? 1 :
-      (e.target instanceof Line) ? 2 : null
-    )
-    setSelectShape(e.target as ImageType | TextType | Line)
-    console.log(selectShape)
-  }
+  // const handleSelect = (e: KonvaEventObject<MouseEvent | TouchEvent | DragEvent>) => {
+  //   setCategory(
+  //     (e.target instanceof TextType) ? 0 :
+  //     (e.target instanceof Image) ? 1 :
+  //     (e.target instanceof Line) ? 2 : null
+  //   )
+  //   setSelectShape(e.target as ImageType | TextType | Line)
+  //   console.log(selectShape)
+  // }
 
   const handleCategory = (e: MouseEventType<HTMLButtonElement>, index: number) => {
     setCategory(index)
 
     if(index === 1) {
-      refState?.children && refState.children[0].children && setSelectShape(refState?.children[0]?.children[0] as ImageType)
+      // @ts-ignore
+      setSelectKey(Konva?.stages[0].children[0].children[0].colorKey)
     }
   }
 
@@ -113,9 +111,11 @@ const Edit = ({ cropImage }: Props) => {
     const konvaImage = new Konva.Image({
       image,
       width: size.width,
-      height: size.height
+      height: size.height,
+      filters: [Konva.Filters.Blur]
     })
 
+    konvaImage.cache()
     konvaLayer.add(konvaImage)
     konvaStage.add(konvaLayer)
     konvaLayer.draw()
@@ -126,7 +126,11 @@ const Edit = ({ cropImage }: Props) => {
         (e.target instanceof ImageType) ? 1 :
         (e.target instanceof Line) ? 2 : null
       )
+      // @ts-ignore
+      setSelectKey(e.target.colorKey)      
     })
+
+    setRefState(konvaStage)
 
     return () => {
       konvaStage.destroy()
@@ -241,14 +245,10 @@ const Edit = ({ cropImage }: Props) => {
         {
           (category !== null) && (
             (category === 0) ?
-            <TextEdit
-              refState={ refState }
-              selectShape={ selectShape }
-              setSelectShape={ setSelectShape }
-            /> :
+            <TextEdit selectKey={ selectKey } setSelectKey={ setSelectKey } /> :
             (category === 1) ?
-            <Filter selectShape={ selectShape } /> :
-            <DrawEdit selectShape={ selectShape } />
+            <Filter selectKey={ selectKey } /> :
+            <DrawEdit selectKey={ selectKey } />
           )
         }
       </div>

@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react"
-import type { SelectShapeType } from "@/type/type"
+import Konva from "konva"
 
-const Color = ({ selectShape }: { selectShape: SelectShapeType }) => {
-  const [value, setValue] = useState(selectShape?.attrs.fill)
+const Color = ({ selectKey }: { selectKey: string }) => {
+  const [value, setValue] = useState('')
   
   useEffect(() => {
-    setValue(selectShape?.attrs.fill)
-  }, [selectShape])
+    setValue(Konva.shapes[selectKey].attrs.fill)
+  }, [selectKey])
 
   return (
     <div className="flex">
@@ -20,12 +20,10 @@ const Color = ({ selectShape }: { selectShape: SelectShapeType }) => {
           rounded-2xl
         "
         value={ value }
-        onChange={
-          e => {
-            selectShape?.fill(e.target.value)
-            setValue(e.target.value)
-          }
-        }
+        onChange={ e => {
+          Konva.shapes[selectKey].fill(e.target.value)
+          setValue(e.target.value)
+        }}
       />
     </div>
   )

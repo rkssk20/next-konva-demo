@@ -1,21 +1,20 @@
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import type { Stage } from 'konva/lib/Stage'
 import { Text } from 'konva/lib/shapes/Text'
-import type { SelectShapeType, SetSelectShapeType } from '@/type/type'
-import handleAddText from '@/lib/handleAddText'
+import type { SetSelectShapeType } from '@/type/type'
 import SubCategoryButton from '@/atoms/SubCategoryButton'
 import Input from '@/components/Edit/subCategory/text/Input'
 import Format from '@/components/Edit/subCategory/text/Format'
 import Color from '@/components/Edit/subCategory/text/Color'
 import Align from '@/components/Edit/subCategory/text/Fonts'
+import Konva from 'konva'
 
 type Props = {
-  refState: Stage | null
-  selectShape: SelectShapeType
-  setSelectShape: SetSelectShapeType
+  selectKey: string
+  setSelectKey: Dispatch<SetStateAction<string>>
 }
 
-const TextEdit = ({ refState, selectShape, setSelectShape }: Props) => {
+const TextEdit = ({ selectKey, setSelectKey }: Props) => {
   const [tabNumber, setTabNumber] = useState<number>(0)
 
   const subcategory_list = [{
@@ -33,9 +32,35 @@ const TextEdit = ({ refState, selectShape, setSelectShape }: Props) => {
   }]
 
   const handleAdd = () => {
-    handleAddText({ refState, setSelectShape })
+    const text: Text = new Konva.Text({
+      x: 20,
+      y: 60,
+      text: 'テキストを入力',
+      fontSize: 25,
+      fontFamily: 'Noto Sans JP',
+      lineHeight: 1.5,
+      fill: '#ffffff',
+      align: 'center',
+      verticalAlign: 'middle',
+      draggable: true, 
+    }).on('dragend', () => {
+      const width = (window.innerWidth < 640) ? (window.innerWidth - 32) : 608
+      const height = (window.innerWidth < 640) ? (((window.innerWidth - 32) / 16) * 9) : 342
+  
+      text.absolutePosition({
+        x: ((text.attrs.x - text.textWidth) < (-text.textWidth * 2)) ? 5 : (text.attrs.x > (width - 10)) ? (width - 50) : text.attrs.x,
+        y: ((text.attrs.y - text.textHeight) < (-text.textHeight * 2)) ? 5 : (text.attrs.y > (height - 10)) ? (height - 50) : text.attrs.y
+      })
+    })
+  
+    text.absolutePosition({
+      x: (window.innerWidth < 640) ? (((window.innerWidth - 32) / 2) - (text.textWidth / 2)) : (304 - (text.textWidth / 2)),
+      y: (window.innerWidth < 640) ? (((((window.innerWidth - 32) / 16) * 9) / 2) - (text.textHeight / 2)): (171 - (text.textHeight / 2))
+    })
 
     setTabNumber(0)
+    Konva.stages[0].children && Konva.stages[0].children[0].add(text)
+    setSelectKey(text.colorKey)
   }
 
   return (
@@ -70,7 +95,7 @@ const TextEdit = ({ refState, selectShape, setSelectShape }: Props) => {
           追加
         </button>
 
-        <div className='mx-2 border-r border-gray-300' />
+        <div className='border-r border-gray-300' />
 
         <div
           className='
@@ -85,7 +110,7 @@ const TextEdit = ({ refState, selectShape, setSelectShape }: Props) => {
                 key={ item.name }
                 name={ item.name }
                 icon={ item.icon }
-                disabled={ !(selectShape instanceof Text) }
+                disabled={ !(Konva.shapes[selectKey] instanceof Text) }
                 handle={ () => setTabNumber(index) }
                 select={ (tabNumber === index) }
               />
@@ -95,16 +120,15 @@ const TextEdit = ({ refState, selectShape, setSelectShape }: Props) => {
       </div>
 
       {
-        (selectShape instanceof Text) &&
+        (Konva.shapes[selectKey] instanceof Text)  &&
         (tabNumber === 0) ?
-        <Input selectShape={ selectShape } /> :
+        <Input selectKey={ selectKey } /> :
         (tabNumber === 1) ?
-        <Format selectShape={ selectShape } /> :
+        <Format selectKey={ selectKey } /> :
         (tabNumber === 2) ?
-        <Color selectShape={ selectShape } /> :
-        (tabNumber === 3) ?
-        <Align selectShape={ selectShape } /> :
-        <></>
+        <Color selectKey={ selectKey } /> :
+        (tabNumber === 3) &&
+        <Align selectKey={ selectKey } />
       }
     </>
   )

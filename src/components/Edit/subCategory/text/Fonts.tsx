@@ -1,8 +1,8 @@
 import { ChangeEvent, useEffect, useState } from "react"
-import type { SelectShapeType } from "@/type/type"
+import Konva from "konva"
 import Font from "@/atoms/Font"
 
-const Fonts = ({ selectShape }: { selectShape: SelectShapeType }) => {
+const Fonts = ({ selectKey }: { selectKey: string }) => {
   const [value, setValue] = useState('')
 
   const fonts = [
@@ -60,16 +60,16 @@ const Fonts = ({ selectShape }: { selectShape: SelectShapeType }) => {
   ]
 
   const handleFonts = (e: ChangeEvent<HTMLSelectElement>) => {
-    if(!selectShape) return
+    if(!selectKey) return
 
     setValue(e.target.value)
     // @ts-ignore
-    selectShape?.fontFamily(`"${ e.target.value}"`)
+    Konva.shapes[selectKey].fontFamily(`"${ e.target.value}"`)
   }
 
   useEffect(() => {
-    setValue(selectShape?.attrs.fontFamily)
-  }, [selectShape])
+    setValue(Konva.shapes[selectKey].attrs.fontFamily)
+  }, [selectKey])
 
   return (
     <div className="mx-2 flex-1 overflow-y-scroll">

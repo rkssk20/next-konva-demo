@@ -1,7 +1,4 @@
-import type { SelectShapeType } from "@/type/type"
-
-
-const DrawEdit = ({ selectShape }: { selectShape: SelectShapeType }) => {
+const DrawEdit = ({ selectKey }: { selectKey: string }) => {
   return (
     <div>
       <button>

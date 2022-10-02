@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
+import Konva from "konva"
 import { Text } from "konva/lib/shapes/Text"
-import type { SelectShapeType } from "@/type/type"
 
-const Format = ({ selectShape }: { selectShape: SelectShapeType }) => {
-  const [value, setValue] = useState(selectShape?.attrs.align)
+const Format = ({ selectKey }: { selectKey: string }) => {
+  const [value, setValue] = useState<string>('')
 
   useEffect(() => {
-    setValue(selectShape?.attrs.align)
-  }, [selectShape])
+    setValue(Konva.shapes[selectKey].attrs.align)
+  }, [selectKey])
 
   return (
     <div>
@@ -19,12 +19,11 @@ const Format = ({ selectShape }: { selectShape: SelectShapeType }) => {
               (item === value) ?
               "bg-slate-600" : "bg-white"
             }
-            onClick={
-              () => {
-                (selectShape instanceof Text) && selectShape?.align(item)
-                setValue(item)
-              }
-            }
+            onClick={ () => {
+                    // @ts-ignore
+              Konva.shapes[selectKey].align(item)
+              setValue(item)
+            }}
           >
             {
               (item === 'left') ? '左' :
