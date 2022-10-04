@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import type { Stage as StageType } from "konva/lib/Stage";
+import Konva from 'konva';
 
 // 画面幅に関するフック
-const useScreenWidth = (ref: StageType | null) => {
+const useScreenWidth = () => {
   const [size, setSize] = useState({
     width:
       (window.innerWidth < 528) ? (window.innerWidth - 32) :
@@ -22,32 +22,26 @@ const useScreenWidth = (ref: StageType | null) => {
 
     // 0.5秒ごと
     timeId = window.setTimeout(() => {
+      const width =
+      (window.innerWidth < 528) ? (window.innerWidth - 32) :
+        (window.innerWidth < 768) ? 496 :
+          (window.innerWidth < 1056) ? (((window.innerWidth - 32) - 48) - 376) : 600
+
+      const height =
+      (window.innerWidth < 528) ? ((window.innerWidth - 32) * 0.563) :
+        (window.innerWidth < 768) ? 279.248 :
+          (window.innerWidth < 1056) ? ((((window.innerWidth - 32) - 48) - 376) * 0.563) : 337.8
+
       // canvasサイズをセット
-      setSize({
-        width:
-          (window.innerWidth < 528) ? (window.innerWidth - 32) :
-              (window.innerWidth < 768) ? 496 :
-                (window.innerWidth < 1056) ? (((window.innerWidth - 32) - 48) - 376) : 600,
-        height:
-          (window.innerWidth < 528) ? ((window.innerWidth - 32) * 0.563) :
-            (window.innerWidth < 768) ? 279.248 :
-              (window.innerWidth < 1056) ? ((((window.innerWidth - 32) - 48) - 376) * 0.563) : 337.8
-      })
+      setSize({ width, height })
 
       // 元のキャンバスサイズと比較し、現在のサイズにするための値を求める
-      const ration =
-        ((window.innerWidth < 528) ? (window.innerWidth - 32) :
-          (window.innerWidth < 768) ? 496 :
-            (window.innerWidth < 1056) ? (((window.innerWidth - 32) - 48) - 376) : 600) / size.width
-        // (window.innerWidth < 1056) ?
-        //   (window.innerWidth < 768) ?
-        //     (window.innerWidth < 672) ?
-        //       ((window.innerWidth - 32) / size.width) : (608 / size.width)
-        //     : ((((window.innerWidth - 32) - 48) - 376) / size.width)
-        //   : (600 / size.width)
+      const ration = width / size.width
 
       // 値をセットして拡大・縮小する
-      ref?.scaleX(ration).scaleY(ration)
+      Konva.stages[0].width(width)
+      Konva.stages[0].height(height)
+      Konva.stages[0].scale({ x: ration, y: ration })
     }, 500)
   }
 
@@ -59,7 +53,7 @@ const useScreenWidth = (ref: StageType | null) => {
       // アンマウント時に監視を解除
       window.removeEventListener('resize', handleResize)
     }
-  }, [ref])
+  }, [Konva.stages[0]])
 
   return size
 }

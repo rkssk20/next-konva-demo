@@ -1,9 +1,6 @@
-import { useState, useEffect, useRef, MouseEvent as MouseEventType } from "react"
+import { useState, useEffect, MouseEvent as MouseEventType } from "react"
 import { useRouter } from "next/router"
-import { Stage, Layer , Image } from 'react-konva';
 import Konva from "konva";
-import type { Stage as StageType } from "konva/lib/Stage";
-import { Layer as LayerType } from "konva/lib/Layer";
 import { Image as ImageType } from "konva/lib/shapes/Image";
 import { Text as TextType } from "konva/lib/shapes/Text"
 import { Line } from "konva/lib/shapes/Line";
@@ -11,7 +8,6 @@ import useImage from "@/hooks/useImage";
 import useScreenWidth from '@/hooks/useScreenWidth'
 import Header from '@/atoms/Header'
 import CategoryButton from "@/atoms/CategoryButton";
-import BaseImage from '@/components/Edit/BaseImage'
 import TextEdit from '@/components/Edit/subCategory/TextEdit'
 import DrawEdit from '@/components/Edit/subCategory/DrawEdit'
 import Filter from '@/components/Edit/category/Filter'
@@ -22,21 +18,20 @@ type Props = {
 
 const Edit = ({ cropImage }: Props) => {
   const [category, setCategory] = useState<number | null>(null)
-  const [refState, setRefState] = useState<StageType | null>(null)
   const [selectKey, setSelectKey] = useState('')
   const image = useImage(cropImage)
-  const size = useScreenWidth(refState)
+  const size = useScreenWidth()
   const router = useRouter()
-  const ref = useRef<LayerType | null>(null)
 
-  console.log(Konva)
+  console.log(Konva);
+  
   
   const category_list = [{
-    name: 'テキスト',
-    icon: <span className="pb-2 text-2xl material-symbols-rounded">&#xe264;</span>
-  }, {
     name: 'フィルター',
     icon: <span className="pb-2 text-2xl material-symbols-rounded">&#xe43b;</span>
+  }, {
+    name: 'テキスト',
+    icon: <span className="pb-2 text-2xl material-symbols-rounded">&#xe264;</span>
   }, {
     name: '手書き',
     icon:  <span className="pb-2 text-2xl material-symbols-rounded">&#xe3ae;</span>
@@ -51,23 +46,13 @@ const Edit = ({ cropImage }: Props) => {
     })
   }
 
-  // const handleSelect = (e: KonvaEventObject<MouseEvent | TouchEvent | DragEvent>) => {
-  //   setCategory(
-  //     (e.target instanceof TextType) ? 0 :
-  //     (e.target instanceof Image) ? 1 :
-  //     (e.target instanceof Line) ? 2 : null
-  //   )
-  //   setSelectShape(e.target as ImageType | TextType | Line)
-  //   console.log(selectShape)
-  // }
-
   const handleCategory = (e: MouseEventType<HTMLButtonElement>, index: number) => {
-    setCategory(index)
-
-    if(index === 1) {
+    if(index === 0) {
       // @ts-ignore
       setSelectKey(Konva?.stages[0].children[0].children[0].colorKey)
     }
+
+    setCategory(index)
   }
 
   useEffect(() => {
@@ -78,24 +63,6 @@ const Edit = ({ cropImage }: Props) => {
       shallow: true
     })
   }, [cropImage])
-
-  // useEffect(() => {
-  //   const newImage = new Konva.Image({
-  //     image,
-  //     width: (
-  //       (window.innerWidth < 528) ? (window.innerWidth - 32) :
-  //         (window.innerWidth < 768) ? 496 :
-  //           (window.innerWidth < 1056) ? (((window.innerWidth - 32) - 48) - 376) : 600
-  //     ),
-  //     height: (
-  //       (window.innerWidth < 528) ? ((window.innerWidth - 32) * 0.563) :
-  //         (window.innerWidth < 768) ? 279.248 :
-  //           (window.innerWidth < 1056) ? ((((window.innerWidth - 32) - 48) - 376) * 0.563) : 337.8
-  //     )
-  //   }) 
-
-  //   refState?.children && refState?.children[0] && refState?.children[0].add(newImage)
-  // }, [refState])
 
   useEffect(() => {
     if(!image || (Konva.stages.length > 0)) return
@@ -112,25 +79,39 @@ const Edit = ({ cropImage }: Props) => {
       image,
       width: size.width,
       height: size.height,
-      filters: [Konva.Filters.Blur]
+      filters: [
+        Konva.Filters.Brighten,
+        Konva.Filters.Contrast,
+        Konva.Filters.HSV,
+        Konva.Filters.Blur,
+        Konva.Filters.Pixelate,
+        Konva.Filters.Noise
+      ]
     })
+    .brightness(0)
+    .contrast(0)
+    .saturation(0)
+    .blurRadius(0)
+    .pixelSize(3)
+    .noise(0)
 
     konvaImage.cache()
     konvaLayer.add(konvaImage)
     konvaStage.add(konvaLayer)
     konvaLayer.draw()
+    setSelectKey(konvaImage.colorKey)
+    setCategory(0)
 
     konvaStage.on('mousedown touchstart', (e) => {
+      // @ts-ignore
+      setSelectKey(e.target.colorKey)
+
       setCategory(
-        (e.target instanceof TextType) ? 0 :
-        (e.target instanceof ImageType) ? 1 :
+        (e.target instanceof ImageType) ? 0 :
+        (e.target instanceof TextType) ? 1 :
         (e.target instanceof Line) ? 2 : null
       )
-      // @ts-ignore
-      setSelectKey(e.target.colorKey)      
     })
-
-    setRefState(konvaStage)
 
     return () => {
       konvaStage.destroy()
@@ -180,27 +161,14 @@ const Edit = ({ cropImage }: Props) => {
         }
       />
 
-      {/* <div id='konva' /> */}
-
-      {/* <Stage
+      <div
+        id='container'
         className="
           mb-2
           md:my-auto
           shadow-[0_0_5px_1px_rgba(0,0,0,0.3)]
         "
-        width={ size.width }
-        height={ size.height }
-        ref={ setRefState }
-        onClick={ handleSelect }
-        onTouchStart={ handleSelect }
-        onDragEnd={ handleSelect }
-      >
-        <Layer> */}
-          {/* <BaseImage cropImage={ cropImage } /> */}
-        {/* </Layer>
-      </Stage> */}
-
-      <div id='container' />
+      />
 
       <div
         className="
@@ -220,6 +188,7 @@ const Edit = ({ cropImage }: Props) => {
         <div
           className="
             w-full
+            min-h-[85px]
             flex
             overflow-x-scroll
             border-b
@@ -245,9 +214,9 @@ const Edit = ({ cropImage }: Props) => {
         {
           (category !== null) && (
             (category === 0) ?
-            <TextEdit selectKey={ selectKey } setSelectKey={ setSelectKey } /> :
-            (category === 1) ?
             <Filter selectKey={ selectKey } /> :
+            (category === 1) ?
+            <TextEdit selectKey={ selectKey } setSelectKey={ setSelectKey } /> :
             <DrawEdit selectKey={ selectKey } />
           )
         }
