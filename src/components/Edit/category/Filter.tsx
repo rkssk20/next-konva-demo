@@ -2,9 +2,9 @@ import { useState, useEffect, ChangeEvent } from "react";
 import Konva from "konva"
 
 const Filter = ({ selectKey }: { selectKey: string }) => {
-  const [brightness, setBrightness] = useState<number>(Konva.shapes[selectKey].attrs.brightness / 0.1)
+  const [brightness, setBrightness] = useState<number>(Konva.shapes[selectKey].attrs.brightness / 0.05)
   const [contrast, setContrast] = useState<number>(Konva.shapes[selectKey].attrs.contrast / 10)
-  const [saturation, setSaturation] = useState<number>(Konva.shapes[selectKey].attrs.saturation / 0.4)
+  const [saturation, setSaturation] = useState<number>(Konva.shapes[selectKey].attrs.saturation / 0.2)
   const [blur, setBlur] = useState<number>(Konva.shapes[selectKey].attrs.blurRadius / 2.5)
   const [pixelate, setPixelate] = useState<number>((Konva.shapes[selectKey].attrs.pixelSize / 3) - 1)
   const [noise, setNoise] = useState<number>(Konva.shapes[selectKey].attrs.noise / 0.1)
@@ -16,7 +16,7 @@ const Filter = ({ selectKey }: { selectKey: string }) => {
   // 明るさ
   const handleBrightness = (e: ChangeEvent<HTMLInputElement>) => {
     const number = Number(e.target.value)
-    Konva.shapes[selectKey].brightness(number * 0.1)
+    Konva.shapes[selectKey].brightness(number * 0.05)
     setBrightness(number)
   }
 
@@ -30,7 +30,7 @@ const Filter = ({ selectKey }: { selectKey: string }) => {
   // 彩度
   const handleSadturation = (e: ChangeEvent<HTMLInputElement>) => {
     const number = Number(e.target.value)
-    Konva.shapes[selectKey].saturation(number * 0.4)
+    Konva.shapes[selectKey].saturation(number * 0.2)
     setSaturation(number)
   }
 
@@ -133,7 +133,13 @@ const Filter = ({ selectKey }: { selectKey: string }) => {
   }]
 
   return (
-    <div className="mx-2 mb-6 overflow-y-scroll">
+    <div
+      className="
+        px-6
+        mb-6
+        overflow-y-scroll
+      "
+    >
       {
         filter_list.map(item => (
           <div key={ item.name } className="mt-6">

@@ -11,8 +11,8 @@ const Input = ({ selectKey }: { selectKey: string }) => {
   return (
     <textarea
       className='
-        mt-2
-        mx-2
+        mt-4
+        mx-6
         p-2
         bg-gray-200
         rounded-xl
@@ -20,7 +20,7 @@ const Input = ({ selectKey }: { selectKey: string }) => {
         line-break: anywhere
       '
       placeholder='テキストを入力'
-      rows={ 3 }
+      rows={ 5 }
       value={ text }
       onChange={ e => {
         setText(e.target.value)

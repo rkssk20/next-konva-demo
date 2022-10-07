@@ -4,7 +4,7 @@ const Page = ({ children }: { children: ReactNode }) => {
   return (
     <div
       className='
-        max-w-screen-sm
+        max-w-[640px]
         h-[calc(100vh-85px)]
         mt-[69px]
         mx-auto

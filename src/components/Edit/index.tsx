@@ -20,11 +20,8 @@ const Edit = ({ cropImage }: Props) => {
   const [category, setCategory] = useState<number | null>(null)
   const [selectKey, setSelectKey] = useState('')
   const image = useImage(cropImage)
-  const size = useScreenWidth()
   const router = useRouter()
-
-  console.log(Konva);
-  
+  const defaultWidth = useScreenWidth()
   
   const category_list = [{
     name: 'フィルター',
@@ -65,20 +62,24 @@ const Edit = ({ cropImage }: Props) => {
   }, [cropImage])
 
   useEffect(() => {
-    if(!image || (Konva.stages.length > 0)) return
+    if(!image || (Konva.stages.length > 0) || !defaultWidth) return
+
+    const parent = document.querySelector('#stage-parent')
+
+    if(!parent) return
 
     const konvaStage = new Konva.Stage({
       container: 'container',
-      width: size.width,
-      height: size.height
+      width: defaultWidth,
+      height: defaultWidth * 0.5625
     })
 
     const konvaLayer = new Konva.Layer()
 
     const konvaImage = new Konva.Image({
       image,
-      width: size.width,
-      height: size.height,
+      width: parent.clientWidth,
+      height: parent.clientHeight,
       filters: [
         Konva.Filters.Brighten,
         Konva.Filters.Contrast,
@@ -117,21 +118,21 @@ const Edit = ({ cropImage }: Props) => {
       konvaStage.destroy()
       // konvaImage.remove()
     }
-  }, [image])
+  }, [image, defaultWidth])
   
   return (
     <div
       className="
         w-full
-        xs:w-[528px]
-        md:w-[calc(100%-32px)]
+        md:w-[528px]
+        lg:w-[calc(100%-32px)]
         max-w-5xl
         h-[calc(100vh-85px)]
         mt-[69px]
         mx-auto
         p-4
-        md:flex
-        md:justify-between
+        lg:flex
+        lg:justify-between
         bg-white
         rounded-2xl
         overflow-hidden
@@ -162,18 +163,25 @@ const Edit = ({ cropImage }: Props) => {
       />
 
       <div
-        id='container'
         className="
+          w-full
+          md:w-[496px]
+          lg:w-[calc((100%-16px)-376px)]
+          xl:w-[600px]
+          aspect-video
           mb-2
-          md:my-auto
+          lg:my-auto
           shadow-[0_0_5px_1px_rgba(0,0,0,0.3)]
         "
-      />
+        id='stage-parent'
+      >
+        <div id='container' />
+      </div>
 
       <div
         className="
           w-full
-          md:w-[376px]
+          lg:w-[376px]
           flex
           flex-col
           border
@@ -182,7 +190,7 @@ const Edit = ({ cropImage }: Props) => {
           rounded-2xl
         "
         style={{
-          height: (window.innerWidth < 768) ? `calc(100% - ${ size.height }px)` : '100%'
+          height: (window.innerWidth < 768) ? `calc(100% - ${ document.querySelector('#stage-parent')?.clientHeight }px)` : '100%'
         }}
       >
         <div

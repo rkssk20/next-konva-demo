@@ -3,18 +3,17 @@ import Konva from 'konva';
 
 // 画面幅に関するフック
 const useScreenWidth = () => {
-  const [size, setSize] = useState({
-    width:
-      (window.innerWidth < 528) ? (window.innerWidth - 32) :
-        (window.innerWidth < 768) ? 496 :
-          (window.innerWidth < 1056) ? (((window.innerWidth - 32) - 48) - 376) : 600,
-    height:
-      (window.innerWidth < 528) ? ((window.innerWidth - 32) * 0.563) :
-        (window.innerWidth < 768) ? 279.248 :
-          (window.innerWidth < 1056) ? ((((window.innerWidth - 32) - 48) - 376) * 0.563) : 337.8
-    })
+  const [defaultWidth, setDefaultWidth] = useState(document.querySelector('#stage-parent')?.clientWidth)
 
-  // 画面幅の変更
+  useEffect(() => {
+    const parent = document.querySelector('#stage-parent')
+    
+    parent && setDefaultWidth(parent.clientWidth);
+
+  }, [document.querySelector('#stage-parent')])
+
+  useEffect(() =>{
+      // 画面幅の変更
   const handleResize = () => {
     let timeId
 
@@ -22,30 +21,18 @@ const useScreenWidth = () => {
 
     // 0.5秒ごと
     timeId = window.setTimeout(() => {
-      const width =
-      (window.innerWidth < 528) ? (window.innerWidth - 32) :
-        (window.innerWidth < 768) ? 496 :
-          (window.innerWidth < 1056) ? (((window.innerWidth - 32) - 48) - 376) : 600
+      const parent = document.querySelector('#stage-parent')
 
-      const height =
-      (window.innerWidth < 528) ? ((window.innerWidth - 32) * 0.563) :
-        (window.innerWidth < 768) ? 279.248 :
-          (window.innerWidth < 1056) ? ((((window.innerWidth - 32) - 48) - 376) * 0.563) : 337.8
+      if(!parent || !defaultWidth) return
 
-      // canvasサイズをセット
-      setSize({ width, height })
+      const ration = parent.clientWidth / defaultWidth
 
-      // 元のキャンバスサイズと比較し、現在のサイズにするための値を求める
-      const ration = width / size.width
-
-      // 値をセットして拡大・縮小する
-      Konva.stages[0].width(width)
-      Konva.stages[0].height(height)
+      Konva.stages[0].width(parent.clientWidth)
+      Konva.stages[0].height(parent.clientWidth * 0.5625)
       Konva.stages[0].scale({ x: ration, y: ration })
     }, 500)
   }
 
-  useEffect(() =>{
     // 画面幅変更を監視
     window.addEventListener('resize', handleResize)
 
@@ -53,9 +40,9 @@ const useScreenWidth = () => {
       // アンマウント時に監視を解除
       window.removeEventListener('resize', handleResize)
     }
-  }, [Konva.stages[0]])
+  }, [document.querySelector('#stage-parent')])
 
-  return size
+  return defaultWidth
 }
 
 export default useScreenWidth
