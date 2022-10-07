@@ -1,12 +1,15 @@
+import type { Dispatch, SetStateAction } from "react"
 import Head from "next/head"
 
 type Props = {
+  setTargetRef: Dispatch<SetStateAction<HTMLDivElement | null>> | undefined
   fontFamily: string
+  handleFont: (fontFamily: string) => void
 }
 
-const Font = ({ fontFamily }: Props) => {
+const Font = ({ setTargetRef, fontFamily, handleFont }: Props) => {
   return (
-    <div>
+    <div ref={ setTargetRef }>
       <Head>
         <style>
           @import url({`https://fonts.googleapis.com/css2?family=${ fontFamily.replace(/ /g, '+') }&text=${ fontFamily.replace(/ /g, '') }&display=swap`});
@@ -28,6 +31,7 @@ const Font = ({ fontFamily }: Props) => {
           active:bg-[#e5e5e5]
           rounded-xl
         "
+        onClick={ () => handleFont(fontFamily) }
       >
         { fontFamily }
       </button>

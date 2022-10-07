@@ -11,7 +11,7 @@ const Input = ({ selectKey }: { selectKey: string }) => {
   return (
     <textarea
       className='
-        mt-4
+        mt-6
         mx-6
         p-2
         bg-gray-200

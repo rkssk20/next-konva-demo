@@ -136,7 +136,6 @@ const Filter = ({ selectKey }: { selectKey: string }) => {
     <div
       className="
         px-6
-        mb-6
         overflow-y-scroll
       "
     >

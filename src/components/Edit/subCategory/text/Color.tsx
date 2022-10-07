@@ -1,33 +1,65 @@
 import { useState, useEffect } from "react"
 import Konva from "konva"
-import { SketchPicker  } from 'react-color'
+import { HexColorPicker, HexColorInput } from "react-colorful";
 
 const Color = ({ selectKey }: { selectKey: string }) => {
   const [value, setValue] = useState('')
+
+  console.log(value);
+  
   
   useEffect(() => {
     setValue(Konva.shapes[selectKey].attrs.fill)
   }, [selectKey])
 
+  const handleColor = (e: string) => {
+    Konva.shapes[selectKey].fill(e)
+    setValue(e)
+  }
+
   return (
-    <div className="flex overflow-y-scroll">
-      <SketchPicker
-        className="
-          mx-auto
-          !shadow-none
-          [&_label]:!text-base
-          [&_input]:!text-base
-        "
-        width="326px"
-        disableAlpha
-        presetColors={ [] }
+    <div
+      className="
+        mt-4
+        px-6
+        flex
+        items-center
+        justify-center
+        flex-1
+        overflow-y-scroll
+      "
+    >
+      <HexColorPicker
+        className="mt-4 pb-6"
         color={ value }
-        onChange={ e => {
-            Konva.shapes[selectKey].fill(e.hex)
-            setValue(e.hex)
-          }
-        }
+        onChange={ handleColor }
       />
+
+      <div
+        className="
+          ml-4
+          pl-1
+          bg-gray-200
+          flex
+          items-center
+          rounded-xl
+          resize-none
+          line-break: anywhere
+        "
+      >
+        <p className="px-1 text-gray-500">#</p>
+        
+        <HexColorInput
+          className='
+            max-w-[80px]
+            p-2
+            bg-gray-200
+            rounded-xl
+          '
+          color={ value }
+          onChange={ handleColor }
+        />
+      </div>
     </div>
   )
 }

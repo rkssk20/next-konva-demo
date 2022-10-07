@@ -64,7 +64,6 @@ const TextEdit = ({ selectKey, setSelectKey }: Props) => {
       <div
         className='
           flex
-          mb-2
           border-b
           border-ogp-border
           border-solid
