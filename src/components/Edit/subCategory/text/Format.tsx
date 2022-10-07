@@ -1,18 +1,15 @@
-import { useEffect, useState } from "react"
+import { useState, useEffect } from "react"
 import Konva from "konva"
-import { Text } from "konva/lib/shapes/Text"
 
 const Format = ({ selectKey }: { selectKey: string }) => {
   const [align, setAlign] = useState<string>('')
-  const [color, setColor] = useState('')
 
   useEffect(() => {
     setAlign(Konva.shapes[selectKey].attrs.align)
-    setColor(Konva.shapes[selectKey].attrs.fill)
   }, [selectKey])
 
   return (
-    <div className="mt-4 px-6">
+    <div className="mt-4 px-6 overflow-y-scroll">
       <div>
         <p>整列</p>
 
@@ -54,7 +51,6 @@ const Format = ({ selectKey }: { selectKey: string }) => {
                   Konva.shapes[selectKey].align(item)
                   setAlign(item)
                 }}
-                
               >
                 {
                   (item === 'left') ? 
@@ -78,31 +74,6 @@ const Format = ({ selectKey }: { selectKey: string }) => {
               </button>
             ))
           }
-        </div>
-      </div>
-
-      <div className="mt-6">
-        <p>カラー</p>
-
-        <div className="mt-2">
-          <input
-            type='color'
-            className="
-              w-full
-              h-20
-              p-0
-              bg-none
-              border-0
-              border-none
-              cursor-pointer
-              appearance-none
-            "
-            value={ color }
-            onChange={ e => {
-              Konva.shapes[selectKey].fill(e.target.value)
-              setColor(e.target.value)
-            }}
-          />
         </div>
       </div>
     </div>

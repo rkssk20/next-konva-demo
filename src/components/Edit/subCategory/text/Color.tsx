@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import Konva from "konva"
+import { SketchPicker  } from 'react-color'
 
 const Color = ({ selectKey }: { selectKey: string }) => {
   const [value, setValue] = useState('')
@@ -9,21 +10,23 @@ const Color = ({ selectKey }: { selectKey: string }) => {
   }, [selectKey])
 
   return (
-    <div className="flex">
-      <input
-        type='color'
+    <div className="flex overflow-y-scroll">
+      <SketchPicker
         className="
-          my-8
           mx-auto
-          w-28
-          h-28
-          rounded-2xl
+          !shadow-none
+          [&_label]:!text-base
+          [&_input]:!text-base
         "
-        value={ value }
+        width="326px"
+        disableAlpha
+        presetColors={ [] }
+        color={ value }
         onChange={ e => {
-          Konva.shapes[selectKey].fill(e.target.value)
-          setValue(e.target.value)
-        }}
+            Konva.shapes[selectKey].fill(e.hex)
+            setValue(e.hex)
+          }
+        }
       />
     </div>
   )
